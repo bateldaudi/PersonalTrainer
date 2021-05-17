@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFrag">
+
+    <fragment
+        android:id="@+id/signInFrag"
+        android:name="com.example.personaltrainer.SignInFrag"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFrag_to_SIgnUpFrag"
+            app:destination="@id/SIgnUpFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/SIgnUpFrag"
+        android:name="com.example.personaltrainer.SIgnUpFrag"
+        android:label="fragment_s_ign_up"
+        tools:layout="@layout/fragment_s_ign_up" />
+</navigation>
