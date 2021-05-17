@@ -17,7 +17,6 @@ public class StartFrag extends Fragment {
 
     private final String DEFAULT_STRING_VALUE = "";
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
