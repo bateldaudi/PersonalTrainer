@@ -3,20 +3,57 @@ package com.example.personaltrainer.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.personaltrainer.Adapters.UsersLayoutAdapter;
 import com.example.personaltrainer.R;
 
-public class TrainerStartFrag extends Fragment {
+import java.util.Vector;
 
+public class TrainerStartFrag extends Fragment {
+    private RecyclerView clientsRV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trainer_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_trainer_start, container, false);
+        clientsRV = view.findViewById(R.id.trainer_start_clients_rv);
+        clientsRV.setHasFixedSize(true);
+
+        GridLayoutManager layoutManager  = new GridLayoutManager(getContext(), 3);
+        clientsRV.setLayoutManager(layoutManager);
+
+        Vector<String> sl = new Vector<>();
+        sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss");
+        sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss"); sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss"); sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss"); sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss"); sl.add("SA");
+        sl.add("SsasA");
+        sl.add("sasasas");
+        sl.add("sssssss");
+
+        // specify an adapter
+        UsersLayoutAdapter adapter = new UsersLayoutAdapter(sl);
+        clientsRV.setAdapter(adapter);
+        return view;
     }
 }

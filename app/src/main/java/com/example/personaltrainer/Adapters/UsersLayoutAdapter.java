@@ -49,7 +49,7 @@ public class UsersLayoutAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         String str = mData.elementAt(position);
         holder.userName.setText("bate;" + str);
-        holder.userImage.setImageResource(R.drawable.white_logo_small);
+        holder.userImage.setImageResource(R.drawable.ic_launcher_foreground);
 
     }
 

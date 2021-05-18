@@ -22,6 +22,8 @@ public class StartFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         String userPassword = sharedPref.getString(getString(R.string.sp_user_pass), DEFAULT_STRING_VALUE);
@@ -43,8 +45,8 @@ public class StartFrag extends Fragment {
         }
         else {
             // Go to Sign in view
-            Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
-        }
+            //Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
+            Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);        }
     }
 
     @Override
