@@ -5,9 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/startFrag">
 
+android:id="@+id/nav_graph">
+
     <fragment
         android:id="@+id/signInFrag"
-        android:name="com.example.personaltrainer.SignInFrag"
+        android:name="com.example.personaltrainer.Fragments.SignInFrag"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -16,12 +18,12 @@
     </fragment>
     <fragment
         android:id="@+id/SIgnUpFrag"
-        android:name="com.example.personaltrainer.SIgnUpFrag"
+        android:name="com.example.personaltrainer.Fragments.SIgnUpFrag"
         android:label="fragment_s_ign_up"
         tools:layout="@layout/fragment_s_ign_up" />
     <fragment
         android:id="@+id/startFrag"
-        android:name="com.example.personaltrainer.StartFrag"
+        android:name="com.example.personaltrainer.Fragments.StartFrag"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -30,12 +32,14 @@
     </fragment>
     <fragment
         android:id="@+id/trainerStartFrag"
-        android:name="com.example.personaltrainer.TrainerStartFrag"
+        android:name="com.example.personaltrainer.Fragments.TrainerStartFrag"
         android:label="fragment_trainer_start"
         tools:layout="@layout/fragment_trainer_start" />
     <fragment
         android:id="@+id/traineeStartFrag"
-        android:name="com.example.personaltrainer.TraineeStartFrag"
+        android:name="com.example.personaltrainer.Fragments.TraineeStartFrag"
         android:label="fragment_trainee_start"
-        tools:layout="@layout/fragment_trainee_start" /><action android:id="@+id/action_global_trainerStartFrag" app:destination="@id/trainerStartFrag"/><action android:id="@+id/action_global_traineeStartFrag" app:destination="@id/traineeStartFrag"/>
+        tools:layout="@layout/fragment_trainee_start" />
+    <action android:id="@+id/action_global_trainerStartFrag" app:destination="@id/trainerStartFrag" />
+    <action android:id="@+id/action_global_traineeStartFrag" app:destination="@id/traineeStartFrag" />
 </navigation>

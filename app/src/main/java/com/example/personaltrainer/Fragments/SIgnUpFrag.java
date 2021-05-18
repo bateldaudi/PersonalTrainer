@@ -1,16 +1,22 @@
-package com.example.personaltrainer;
+package com.example.personaltrainer.Fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.personaltrainer.R;
+import com.example.personaltrainer.ShowTrainerListDialogFrag;
 
 public class SIgnUpFrag extends Fragment {
 
@@ -19,6 +25,8 @@ public class SIgnUpFrag extends Fragment {
     private EditText fullName;
     private EditText email;
     private EditText password;
+    private CheckBox wantToBeTrainee;
+    private CheckBox wantToBeTrainer;
 
     private final int MIN_PASS_LEN = 8;
 
@@ -33,6 +41,8 @@ public class SIgnUpFrag extends Fragment {
         fullName = view.findViewById(R.id.sign_up_full_name);
         email = view.findViewById(R.id.sign_up_email);
         password = view.findViewById(R.id.sign_up_password);
+        wantToBeTrainee = view.findViewById(R.id.sign_up_trainee_checkbox);
+        wantToBeTrainer = view.findViewById(R.id.sign_up_trainer_checkbox);
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +58,57 @@ public class SIgnUpFrag extends Fragment {
             }
 
         });
+
+        // want to be a trainee
+        wantToBeTrainee.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                onWantToBeTraineeCheckedChanged(buttonView, isChecked);
+            }
+        });
+
+        // want to be
+        wantToBeTrainer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                onWantToBeTrainerCheckedChanged(buttonView, isChecked);
+            }
+        });
+
         return  view;
 
+    }
+
+    private void onWantToBeTraineeCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked)
+        {
+            // open dialog for choosing trainers
+            FragmentManager fm = getParentFragmentManager();
+            ShowTrainerListDialogFrag editNameDialogFragment = ShowTrainerListDialogFrag.newInstance("Some Title");
+            editNameDialogFragment.show(fm, "fragment_edit_name");
+
+            // Disable trainer check box
+            this.wantToBeTrainer.setEnabled(false);
+        }
+        else
+        {
+            // Enable trainer option check box
+            this.wantToBeTrainer.setEnabled(true);
+        }
+    }
+
+    private void onWantToBeTrainerCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked)
+        {
+            // Disable trainee option check box
+            this.wantToBeTrainee.setEnabled(false);
+        }
+        else
+        {
+            // Enable trainee option check box
+            this.wantToBeTrainee.setEnabled(true);
+        }
     }
 
     /**
@@ -76,6 +135,7 @@ public class SIgnUpFrag extends Fragment {
             // check if email exitst
             email.setError("Please enter a valid Email address");
         }
+
 
         if(isUserInfoValid)
         {
