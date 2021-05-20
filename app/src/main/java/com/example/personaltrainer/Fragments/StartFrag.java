@@ -45,8 +45,9 @@ public class StartFrag extends Fragment {
         }
         else {
             // Go to Sign in view
-            //Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
-            Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);        }
+            Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
+            //Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);
+            }
     }
 
     @Override

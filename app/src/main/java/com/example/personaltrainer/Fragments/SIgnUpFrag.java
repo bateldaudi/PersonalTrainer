@@ -2,6 +2,7 @@ package com.example.personaltrainer.Fragments;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -15,6 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.personaltrainer.Models.FireBaseModel;
+import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.ShowTrainerListDialogFrag;
 
@@ -27,6 +30,8 @@ public class SIgnUpFrag extends Fragment {
     private EditText password;
     private CheckBox wantToBeTrainee;
     private CheckBox wantToBeTrainer;
+    private TextView checkBoxErrorMsg;
+    private int trainerIDOfTrainee;
 
     private final int MIN_PASS_LEN = 8;
 
@@ -43,6 +48,9 @@ public class SIgnUpFrag extends Fragment {
         password = view.findViewById(R.id.sign_up_password);
         wantToBeTrainee = view.findViewById(R.id.sign_up_trainee_checkbox);
         wantToBeTrainer = view.findViewById(R.id.sign_up_trainer_checkbox);
+        checkBoxErrorMsg = view.findViewById(R.id.sign_up_check_box_error_msg);
+
+        checkBoxErrorMsg.setVisibility(View.INVISIBLE);
 
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,11 +143,21 @@ public class SIgnUpFrag extends Fragment {
             // check if email exitst
             email.setError("Please enter a valid Email address");
         }
+        if(!wantToBeTrainee.isChecked() &&
+                !wantToBeTrainer.isChecked()) {
+            isUserInfoValid = false;
+            checkBoxErrorMsg.setVisibility(View.VISIBLE);
+
+        }
 
 
         if(isUserInfoValid)
         {
-            // save user
+            // create user
+            User user =
+                    new User("1", fullName.getText().toString(), email.getText().toString(),wantToBeTrainer.isChecked(),wantToBeTrainee.isChecked(),"trainerIDOfTrainee" );
+            // TODO CHANGE TO USE MODEL
+            FireBaseModel.getInstance().addUser(user);
 
         }
     }
