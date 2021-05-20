@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "180203050497",
+    "project_id": "personaltrainer-87dab",
+    "storage_bucket": "personaltrainer-87dab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180203050497:android:bdec815ce360ebb3f31200",
+        "android_client_info": {
+          "package_name": "com.example.personaltrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180203050497-4j6nf2d47qmd4se2ndtqc0vd6jtmair4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHaA2qsxrh3TLImlFZxbdY-77U_rNmSAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180203050497-4j6nf2d47qmd4se2ndtqc0vd6jtmair4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,18 +2,26 @@ package com.example.personaltrainer.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personaltrainer.Adapters.WorkOutListAdapter;
 import com.example.personaltrainer.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 
@@ -31,6 +39,25 @@ public class TraineeStartFrag extends Fragment {
         LinearLayoutManager layoutManager  =  new LinearLayoutManager(getContext());
         workouts.setLayoutManager(layoutManager);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("ds","Ds");
+        data.put("ds","Ds");
+        data.put("ds","Ds");
+
+
+        // todo remove
+        FirebaseFirestore.getInstance().collection("users").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                //
+                Log.e("dsad","DAsd");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("dsad","DAsd");
+            }
+        });
         Vector<String> sl = new Vector<>();
         sl.add("SA");
         sl.add("SsasA");
