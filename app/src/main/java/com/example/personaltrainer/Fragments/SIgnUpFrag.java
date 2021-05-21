@@ -2,7 +2,7 @@ package com.example.personaltrainer.Fragments;
 
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -16,12 +16,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.personaltrainer.Models.FireBaseModel;
+import com.example.personaltrainer.AuthListeners;
+import com.example.personaltrainer.Models.AuthenticationModel;
 import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.ShowTrainerListDialogFrag;
 
-public class SIgnUpFrag extends Fragment {
+public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListner {
 
     private TextView signInBtn;
     private TextView signUpBtn;
@@ -34,6 +35,22 @@ public class SIgnUpFrag extends Fragment {
     private int trainerIDOfTrainee;
 
     private final int MIN_PASS_LEN = 8;
+
+    @Override
+    public void onCreateUserCompleted(String title) {
+        // alert dialog open
+        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+// 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(title).setTitle(R.string.auth_error_msg);
+
+// 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,8 +174,8 @@ public class SIgnUpFrag extends Fragment {
             User user =
                     new User("1", fullName.getText().toString(), email.getText().toString(),wantToBeTrainer.isChecked(),wantToBeTrainee.isChecked(),"trainerIDOfTrainee" );
             // TODO CHANGE TO USE MODEL
-            FireBaseModel.getInstance().addUser(user);
-
+            //FireBaseModel.getInstance().addUser(user);
+            AuthenticationModel.createUser(email.getText().toString(), password.getText().toString(), this);
         }
     }
 }

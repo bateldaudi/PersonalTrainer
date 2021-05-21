@@ -7,4 +7,6 @@
     <string name="sp_user_type">"sp_user_type"</string>
     <string name="user_type_trainer">"trainer"</string>
     <string name="user_type_trainee">"trainee"</string>
+    <string name="auth_error_msg">Opss... there was an error trying to sign you up</string>
+
 </resources>
