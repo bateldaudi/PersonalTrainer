@@ -8,5 +8,8 @@
     <string name="user_type_trainer">"trainer"</string>
     <string name="user_type_trainee">"trainee"</string>
     <string name="auth_error_msg">Opss... there was an error trying to sign you up</string>
+    <string name="auth_signin_error_title">Sorry... we could not sign you in</string>
+    <string name="auth_signin_error_msg">"Please check your email and password"</string>
+
 
 </resources>

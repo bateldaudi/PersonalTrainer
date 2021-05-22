@@ -14,6 +14,9 @@ public interface UserDao {
     @Query("select * from User")
     LiveData<List<User>> getAllUsers();
 
+    @Query("select * from User WHERE type = (:userType)")
+    LiveData<List<User>> getAllByType(int userType);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(User... users);
 

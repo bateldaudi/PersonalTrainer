@@ -8,24 +8,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FireBaseModel {
-    private static FireBaseModel fireBaseModel = null;
 
-    private FireBaseModel()
+    public FireBaseModel()
     {
 
     }
-
-    public static FireBaseModel getInstance()
-    {
-        if(fireBaseModel == null)
-        {
-            fireBaseModel = new FireBaseModel();
-        }
-
-        return fireBaseModel;
-    }
-
-
     public static final String USERS_TABLE_NAME = "users";
     public  void  addUser(User user)
     {

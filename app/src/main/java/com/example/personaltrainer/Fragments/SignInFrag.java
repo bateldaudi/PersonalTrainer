@@ -1,5 +1,6 @@
 package com.example.personaltrainer.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 
 import com.example.personaltrainer.AuthListeners;
 import com.example.personaltrainer.Models.AuthenticationModel;
+import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
+import com.example.personaltrainer.RedirectHelper;
 
-public class SignInFrag extends Fragment implements AuthListeners.RegisterListener {
+public class SignInFrag extends Fragment{
 
     private static final int MIN_PASS_LEN = 8;
     private TextView signUpBtn;
@@ -58,8 +61,22 @@ public class SignInFrag extends Fragment implements AuthListeners.RegisterListen
 
         if(ValidateSignInInput())
         {
-            //
-            AuthenticationModel.getInstance().registerUser(email.getText().toString() , password.getText().toString(), this) ;
+            AuthenticationModel.getInstance().registerUser(email.getText().toString(), password.getText().toString(), new AuthListeners.RegisterListener() {
+                @Override
+                public void onRegisterUserComplete(String msg) {
+                    if(msg.equals(AuthListeners.REGISTER_SUCCESS))
+                    {
+                        int userType =
+                                getActivity().getPreferences(Context.MODE_PRIVATE).getInt(getString(R.string.sp_user_type), -1);
+
+                        redirectRegisteredUser(userType);
+                    }
+                    else
+                    {
+                        handleErrorSigning();
+                    }
+                }
+            }) ;
         }
     }
 
@@ -82,18 +99,17 @@ public class SignInFrag extends Fragment implements AuthListeners.RegisterListen
     }
 
 
-    @Override
-    public void onRegisterUserComplete(String title) {
-        // alert dialog open
-        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
+    public void handleErrorSigning() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-// 2. Chain together various setter methods to set the dialog characteristics
-        builder.setMessage(title).setTitle(R.string.auth_error_msg);
-
-// 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+        builder.setMessage(R.string.auth_signin_error_msg).setTitle(R.string.auth_signin_error_title);
         AlertDialog dialog = builder.create();
 
         dialog.show();
     }
+    public void redirectRegisteredUser(int userType)
+    {
+        RedirectHelper.redirectRegisteredUser(userType, this.getView());
+    }
+
 }

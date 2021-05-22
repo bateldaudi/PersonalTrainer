@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "be63b1f3922e71c93a5f76e3e428a3e2",
+    "identityHash": "25ef3835dbec13e3600721249a221861",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `email` TEXT, `lastUpdated` INTEGER NOT NULL, `isTrainer` INTEGER, `isTrainee` INTEGER, `trainerIDOfTrainee` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `lastUpdated` INTEGER NOT NULL, `type` INTEGER NOT NULL, `trainerIDOfTrainee` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,28 +21,16 @@
             "notNull": false
           },
           {
-            "fieldPath": "email",
-            "columnName": "email",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "lastUpdated",
             "columnName": "lastUpdated",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "isTrainer",
-            "columnName": "isTrainer",
+            "fieldPath": "type",
+            "columnName": "type",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "isTrainee",
-            "columnName": "isTrainee",
-            "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "trainerIDOfTrainee",
@@ -64,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'be63b1f3922e71c93a5f76e3e428a3e2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '25ef3835dbec13e3600721249a221861')"
     ]
   }
 }

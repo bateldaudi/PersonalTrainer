@@ -13,7 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.personaltrainer.AuthListeners;
+import com.example.personaltrainer.Models.AuthenticationModel;
+import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
+import com.example.personaltrainer.RedirectHelper;
 
 public class StartFrag extends Fragment {
 
@@ -28,26 +32,33 @@ public class StartFrag extends Fragment {
 
         String userPassword = sharedPref.getString(getString(R.string.sp_user_pass), DEFAULT_STRING_VALUE);
         String userEmail = sharedPref.getString(getString(R.string.sp_user_email), DEFAULT_STRING_VALUE);
-        String userType = sharedPref.getString(getString(R.string.sp_user_type), DEFAULT_STRING_VALUE);
+        int userType = sharedPref.getInt(getString(R.string.sp_user_type), -1);
 
         // Check if the user already has an account details saved
         if(!userEmail.equals(DEFAULT_STRING_VALUE) &&
                 !userPassword.equals(DEFAULT_STRING_VALUE)){
-            // check if trainer or trainee
-            if(userType.equals(R.string.user_type_trainer)) {
-                // Start trainer view
-                Navigation.findNavController(view).navigate(R.id.action_global_trainerStartFrag);
-            }
-            else {
-                // Start trainee view
-                Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);
-            }
+
+            // Try to register
+            AuthenticationModel.registerUser(userEmail, userPassword, new AuthListeners.RegisterListener() {
+                @Override
+                public void onRegisterUserComplete(String msg) {
+                    if(msg.equals(AuthListeners.REGISTER_SUCCESS))
+                    {
+                        RedirectHelper.redirectRegisteredUser(userType,view);
+                    }
+                    else
+                    {
+                        // move to sign in
+                        Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
+                    }
+                }
+            });
         }
-        else {
-            // Go to Sign in view
+        else
+        {
+            // move to sign in
             Navigation.findNavController(view).navigate(R.id.action_startFrag_to_signInFrag);
-            //Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);
-            }
+        }
     }
 
     @Override
@@ -58,4 +69,6 @@ public class StartFrag extends Fragment {
                 inflater.inflate(R.layout.fragment_start, container, false);
         return view;
     }
+
+
 }

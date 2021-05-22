@@ -34,17 +34,16 @@ public class AuthenticationModel {
     }
     public static void createUser(String email, String password, AuthListeners.CreatUserListner creatUserListner)
     {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            creatUserListner.onCreateUserCompleted("registerd");
+                            creatUserListner.onCreateUserCompleted(AuthListeners.CREATE_USER_SUCCESS, FirebaseAuth.getInstance().getCurrentUser().getUid());
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            creatUserListner.onCreateUserCompleted(task.getException().getMessage());
+                            creatUserListner.onCreateUserCompleted(task.getException().getMessage(), AuthListeners.EMPTY_ID);
                         }
                     }
                 });
@@ -57,7 +56,7 @@ public class AuthenticationModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            registerListener.onRegisterUserComplete("vi");
+                            registerListener.onRegisterUserComplete(AuthListeners.REGISTER_SUCCESS);
                         } else {
                             registerListener.onRegisterUserComplete(task.getException().getMessage());
                         }

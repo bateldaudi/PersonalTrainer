@@ -1,5 +1,7 @@
 package com.example.personaltrainer.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,11 +20,13 @@ import android.widget.TextView;
 
 import com.example.personaltrainer.AuthListeners;
 import com.example.personaltrainer.Models.AuthenticationModel;
+import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
+import com.example.personaltrainer.RedirectHelper;
 import com.example.personaltrainer.ShowTrainerListDialogFrag;
 
-public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListner {
+public class SIgnUpFrag extends Fragment{
 
     private TextView signInBtn;
     private TextView signUpBtn;
@@ -33,23 +37,9 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
     private CheckBox wantToBeTrainer;
     private TextView checkBoxErrorMsg;
     private int trainerIDOfTrainee;
+    private View layout;
 
     private final int MIN_PASS_LEN = 8;
-
-    @Override
-    public void onCreateUserCompleted(String title) {
-        // alert dialog open
-        // 1. Instantiate an <code><a href="/reference/android/app/AlertDialog.Builder.html">AlertDialog.Builder</a></code> with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-// 2. Chain together various setter methods to set the dialog characteristics
-        builder.setMessage(title).setTitle(R.string.auth_error_msg);
-
-// 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
-    }
 
 
     @Override
@@ -57,6 +47,7 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_s_ign_up, container, false);
+        layout = view;
 
         signInBtn = view.findViewById(R.id.sign_in_btn);
         signUpBtn = view.findViewById(R.id.sign_up_sign_up_btn);
@@ -96,7 +87,6 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
         wantToBeTrainer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 onWantToBeTrainerCheckedChanged(buttonView, isChecked);
             }
         });
@@ -106,8 +96,7 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
     }
 
     private void onWantToBeTraineeCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked)
-        {
+        if(isChecked) {
             // open dialog for choosing trainers
             FragmentManager fm = getParentFragmentManager();
             ShowTrainerListDialogFrag editNameDialogFragment = ShowTrainerListDialogFrag.newInstance("Some Title");
@@ -116,21 +105,18 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
             // Disable trainer check box
             this.wantToBeTrainer.setEnabled(false);
         }
-        else
-        {
+        else {
             // Enable trainer option check box
             this.wantToBeTrainer.setEnabled(true);
         }
     }
 
     private void onWantToBeTrainerCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked)
-        {
+        if(isChecked) {
             // Disable trainee option check box
             this.wantToBeTrainee.setEnabled(false);
         }
-        else
-        {
+        else {
             // Enable trainee option check box
             this.wantToBeTrainee.setEnabled(true);
         }
@@ -141,6 +127,48 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
      * @param v
      */
     private void HandleSignUpClicked(View v) {
+        String emailValue = email.getText().toString();
+        String passwordValue = password.getText().toString();
+
+        if(validateSignUpInput())
+        {
+            AuthenticationModel.createUser(emailValue, passwordValue, new AuthListeners.CreatUserListner() {
+                @Override
+                public void onCreateUserCompleted(String msg, String userID) {
+                    if(!msg.equals(AuthListeners.CREATE_USER_SUCCESS))
+                    {
+                        // Open Error Dialog
+                        OpenErrorCreatingUserDialog(msg);
+                    }
+                    else
+                    {
+                        int userType =
+                                wantToBeTrainer.isChecked() ?
+                                        User.TYPE_TRAINER :
+                                        User.TYPE_TRAINEE;
+                        //User user =
+                       User user =  new User(userID,
+                                fullName.getText()
+                                        .toString(),
+                                userType,
+                                "trainerIDOfTrainee");
+
+                        saveUserInfoToSharedPref(emailValue, passwordValue, userType);
+
+                        Model.instance.addUser(user);
+
+                        RedirectHelper.redirectRegisteredUser(userType, layout);
+
+
+                    }
+                }
+            });
+
+        }
+    }
+
+    private boolean validateSignUpInput()
+    {
         boolean isUserInfoValid = true;
 
         // Validate all inputs
@@ -167,15 +195,28 @@ public class SIgnUpFrag extends Fragment implements AuthListeners.CreatUserListn
 
         }
 
+        return isUserInfoValid;
+    }
 
-        if(isUserInfoValid)
-        {
-            // create user
-            User user =
-                    new User("1", fullName.getText().toString(), email.getText().toString(),wantToBeTrainer.isChecked(),wantToBeTrainee.isChecked(),"trainerIDOfTrainee" );
-            // TODO CHANGE TO USE MODEL
-            //FireBaseModel.getInstance().addUser(user);
-            AuthenticationModel.createUser(email.getText().toString(), password.getText().toString(), this);
-        }
+    public void OpenErrorCreatingUserDialog(String msg) {
+        // alert dialog open
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(msg).setTitle(R.string.auth_error_msg);
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    public void saveUserInfoToSharedPref(String email, String password, int userType)
+    {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString(getString(R.string.sp_user_pass),password);
+        editor.putString(getString(R.string.sp_user_email),email);
+        editor.putInt(getString(R.string.sp_user_type), userType);
+
+        editor.apply();
+
     }
 }

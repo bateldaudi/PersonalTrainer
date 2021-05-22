@@ -14,30 +14,20 @@ public class User {
     @NonNull
     private String id;
     private String name;
-    private String email;
     private long lastUpdated;
-    private Boolean isTrainer;
-    private Boolean isTrainee;
-
-    public String getTrainerIDOfTrainee() {
-        return trainerIDOfTrainee;
-    }
-
-    public void setTrainerIDOfTrainee(String trainerIDOfTrainee) {
-        this.trainerIDOfTrainee = trainerIDOfTrainee;
-    }
-
+    private int type;
     private String trainerIDOfTrainee;
+
+    public static final int TYPE_TRAINER = 1;
+    public static final int TYPE_TRAINEE = 2;
 
     public User() {
     }
 
-    public User(@NonNull String id, String name, String email, Boolean isTrainer, Boolean isTrainee,String trainerIDOfTrainee) {
+    public User(@NonNull String id, String name,int type,String trainerIDOfTrainee) {
         this.id = id;
         this.name = name;
-        this.email = email;
-        this.isTrainer = isTrainer;
-        this.isTrainee = isTrainee;
+        this.type = type;
         this.trainerIDOfTrainee = trainerIDOfTrainee;
     }
 
@@ -57,13 +47,6 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public long getLastUpdated() {
         return lastUpdated;
@@ -73,28 +56,26 @@ public class User {
         this.lastUpdated = lastUpdated;
     }
 
-    public Boolean getTrainer() {
-        return isTrainer;
+
+    public int getType() {
+        return type;
     }
 
-    public void setTrainer(Boolean trainer) {
-        isTrainer = trainer;
+    public void setType(int type) {
+        this.type = type;
+    }
+    public String getTrainerIDOfTrainee() {
+        return trainerIDOfTrainee;
     }
 
-    public Boolean getTrainee() {
-        return isTrainee;
-    }
-
-    public void setTrainee(Boolean trainee) {
-        isTrainee = trainee;
+    public void setTrainerIDOfTrainee(String trainerIDOfTrainee) {
+        this.trainerIDOfTrainee = trainerIDOfTrainee;
     }
 
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> userMap = new HashMap<>();
         userMap.put("name", this.id);
-        userMap.put("email", this.email);
-        userMap.put("isTrainer", this.isTrainer);
-        userMap.put("isTrainee", this.isTrainee);
+        userMap.put("type", this.type);
         userMap.put("trainerIDOfTrainee", this.trainerIDOfTrainee);
         userMap.put("lastUpdated", FieldValue.serverTimestamp());
 
