@@ -39,6 +39,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
     def nav_version = "2.3.5"
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -57,9 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-auth'
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-
-
+   implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.android.application'

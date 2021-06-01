@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personaltrainer.Adapters.UsersLayoutAdapter;
+import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 
+import java.util.List;
 import java.util.Vector;
 
 public class TrainerStartFrag extends Fragment {
@@ -25,35 +27,15 @@ public class TrainerStartFrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_trainer_start, container, false);
         clientsRV = view.findViewById(R.id.trainer_start_clients_rv);
         clientsRV.setHasFixedSize(true);
-
+/*
         GridLayoutManager layoutManager  = new GridLayoutManager(getContext(), 3);
         clientsRV.setLayoutManager(layoutManager);
 
-        Vector<String> sl = new Vector<>();
-        sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss");
-        sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss"); sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss"); sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss"); sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss"); sl.add("SA");
-        sl.add("SsasA");
-        sl.add("sasasas");
-        sl.add("sssssss");
+        List<User> sl = new Vector<>();
 
         // specify an adapter
         UsersLayoutAdapter adapter = new UsersLayoutAdapter(sl);
-        clientsRV.setAdapter(adapter);
+        clientsRV.setAdapter(adapter);*/
         return view;
     }
 }

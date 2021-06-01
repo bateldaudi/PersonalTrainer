@@ -60,6 +60,8 @@ public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        if(mData == null)
+            return 0;
+        return  mData.size();
     }
 }

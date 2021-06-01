@@ -17,6 +17,7 @@ public class User {
     private long lastUpdated;
     private int type;
     private String trainerIDOfTrainee;
+    private String imageUrl;
 
     public static final int TYPE_TRAINER = 1;
     public static final int TYPE_TRAINEE = 2;
@@ -41,6 +42,14 @@ public class User {
     }
     public String getName() {
         return name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setName(String name) {
@@ -78,6 +87,7 @@ public class User {
         userMap.put("type", this.type);
         userMap.put("trainerIDOfTrainee", this.trainerIDOfTrainee);
         userMap.put("lastUpdated", FieldValue.serverTimestamp());
+        userMap.put("imageUrl", imageUrl);
 
         return  userMap;
     }
