@@ -38,6 +38,9 @@ android:id="@+id/nav_graph">
         <argument
             android:name="trainerID"
             app:argType="string" />
+        <argument
+            android:name="trainerName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/traineeStartFrag"

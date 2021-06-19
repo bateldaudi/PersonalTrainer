@@ -91,7 +91,7 @@ public class FireBaseModel {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        userFetched.onUserFetch(new User(document.getData()));
+                        userFetched.onUserFetch(new User(document.getData(), document.getId()));
                     } else {
 int d = 0 ;
                     }

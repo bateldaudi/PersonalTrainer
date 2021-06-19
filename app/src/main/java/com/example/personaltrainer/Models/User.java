@@ -26,13 +26,14 @@ public class User {
 
     public User() {
     }
-    public User(Map<String, Object> user) {
-        this.id = (String) user.get("name");
+    public User(Map<String, Object> user, String userID) {
+        this.name = (String) user.get("name");
         this.type = ((Long)user.get("type")).intValue();
         this.trainerIDOfTrainee = (String) user.get("trainerIDOfTrainee");
         Timestamp ts = (Timestamp)user.get("lastUpdated");
         this.lastUpdated = ts.getSeconds();
         this.imageUrl = (String) user.get("imageUrl");
+        this.id = userID;
     }
     public User(@NonNull String id, String name,int type,String trainerIDOfTrainee) {
         this.id = id;

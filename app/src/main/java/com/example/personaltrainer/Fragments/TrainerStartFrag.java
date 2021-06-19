@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.personaltrainer.Adapters.UsersLayoutAdapter;
 import com.example.personaltrainer.Models.User;
@@ -24,6 +25,7 @@ import java.util.Vector;
 public class TrainerStartFrag extends Fragment {
     private RecyclerView clientsRV;
     private ClientsOfTrainerListViewModel clients;
+    private TextView trainerNameTV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +33,16 @@ public class TrainerStartFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_trainer_start, container, false);
         clientsRV = view.findViewById(R.id.trainer_start_clients_rv);
-/*
+        trainerNameTV = view.findViewById(R.id.trainer_start_trainer_name);
+
+        String trainerID =TrainerStartFragArgs.fromBundle(getArguments()).getTrainerID();
+        String trainerName =TrainerStartFragArgs.fromBundle(getArguments()).getTrainerName();
+
+        trainerNameTV.setText("Welcome " +  trainerName + ",");
+
+
+        //String traineeID =TraineeStartFragArgs.fromBundle(getArguments()).getTraineeID();
+        /*
         //get trainer id from somewhere
        clients = new ViewModelProvider(this, new ClientModelFactory("ICS6ypEnFWad4tFDlT0Tmyb751T2" )).get(ClientsOfTrainerListViewModel.class);
 

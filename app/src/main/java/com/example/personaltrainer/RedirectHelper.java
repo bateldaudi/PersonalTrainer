@@ -15,7 +15,7 @@ public class RedirectHelper {
         // check if trainer or trainee
         if(user.getType() == User.TYPE_TRAINER) {
 
-            NavDirections action  = NavGraphDirections.actionGlobalTrainerStartFrag(user.getId());
+            NavDirections action  = NavGraphDirections.actionGlobalTrainerStartFrag(user.getId(), user.getName());
             // Start trainer view
             Navigation.findNavController(view).navigate(action);
         }
