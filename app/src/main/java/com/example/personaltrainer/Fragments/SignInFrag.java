@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.example.personaltrainer.AuthListeners;
 import com.example.personaltrainer.Models.AuthenticationModel;
+import com.example.personaltrainer.Models.FireBaseModel;
+import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.RedirectHelper;
@@ -63,13 +65,15 @@ public class SignInFrag extends Fragment{
         {
             AuthenticationModel.getInstance().registerUser(email.getText().toString(), password.getText().toString(), new AuthListeners.RegisterListener() {
                 @Override
-                public void onRegisterUserComplete(String msg) {
+                public void onRegisterUserComplete(String msg, String userID) {
                     if(msg.equals(AuthListeners.REGISTER_SUCCESS))
                     {
-                        int userType =
-                                getActivity().getPreferences(Context.MODE_PRIVATE).getInt(getString(R.string.sp_user_type), -1);
-
-                        redirectRegisteredUser(userType);
+                      Model.instance.getCurrentUser(userID, new Model.UserLoaded() {
+                          @Override
+                          public void onCurrentUserLoaded(User user) {
+                              redirectRegisteredUser(user);
+                          }
+                      });
                     }
                     else
                     {
@@ -107,9 +111,9 @@ public class SignInFrag extends Fragment{
 
         dialog.show();
     }
-    public void redirectRegisteredUser(int userType)
+    public void redirectRegisteredUser(User user)
     {
-        RedirectHelper.redirectRegisteredUser(userType, this.getView());
+        RedirectHelper.redirectRegisteredUser(user, this.getView());
     }
 
 }

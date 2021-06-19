@@ -1,23 +1,29 @@
 package com.example.personaltrainer;
 
+import android.os.Bundle;
 import android.view.View;
 
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.personaltrainer.Models.User;
 
 public class RedirectHelper {
 
-    public static void redirectRegisteredUser(int userType, View view)
+    public static void redirectRegisteredUser(User user, View view)
     {
         // check if trainer or trainee
-        if(userType == User.TYPE_TRAINER) {
+        if(user.getType() == User.TYPE_TRAINER) {
+
+            NavDirections action  = NavGraphDirections.actionGlobalTrainerStartFrag(user.getId());
             // Start trainer view
-            Navigation.findNavController(view).navigate(R.id.action_global_trainerStartFrag);
+            Navigation.findNavController(view).navigate(action);
         }
         else {
             // Start trainee view
-            Navigation.findNavController(view).navigate(R.id.action_global_traineeStartFrag);
+            NavDirections action  = NavGraphDirections.actionGlobalTraineeStartFrag(user.getId());
+            // Start trainer view
+            Navigation.findNavController(view).navigate(action);
         }
     }
 }

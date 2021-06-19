@@ -39,7 +39,9 @@ public class AuthenticationModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            creatUserListner.onCreateUserCompleted(AuthListeners.CREATE_USER_SUCCESS, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            creatUserListner
+                                    .onCreateUserCompleted(AuthListeners.CREATE_USER_SUCCESS,
+                                            FirebaseAuth.getInstance().getCurrentUser().getUid());
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -56,9 +58,9 @@ public class AuthenticationModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            registerListener.onRegisterUserComplete(AuthListeners.REGISTER_SUCCESS);
+                            registerListener.onRegisterUserComplete(AuthListeners.REGISTER_SUCCESS, task.getResult().getUser().getUid());
                         } else {
-                            registerListener.onRegisterUserComplete(task.getException().getMessage());
+                            registerListener.onRegisterUserComplete(task.getException().getMessage(), "-1");
                         }
                     }
                 });

@@ -9,6 +9,6 @@ public class AuthListeners{
         public void onCreateUserCompleted(String msg,String userId);
     }
     public interface RegisterListener {
-        public void onRegisterUserComplete(String msg);
+        public void onRegisterUserComplete(String msg, String UserID);
     }
 }

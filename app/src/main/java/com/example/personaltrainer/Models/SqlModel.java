@@ -29,6 +29,12 @@ public class SqlModel {
     public LiveData<List<User>> getAllTrainers()
     {
         return AppLocalDb.db.userDao().getAllByType(User.TYPE_TRAINER);
-
     }
+
+    public LiveData<List<User>> getAllClientOfTrainer(String trainerID)
+    {
+        return AppLocalDb.db.userDao().getAllClientsOfTrainer(trainerID);
+    }
+
+
 }

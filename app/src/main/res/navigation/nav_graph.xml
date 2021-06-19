@@ -34,12 +34,19 @@ android:id="@+id/nav_graph">
         android:id="@+id/trainerStartFrag"
         android:name="com.example.personaltrainer.Fragments.TrainerStartFrag"
         android:label="fragment_trainer_start"
-        tools:layout="@layout/fragment_trainer_start" />
+        tools:layout="@layout/fragment_trainer_start" >
+        <argument
+            android:name="trainerID"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/traineeStartFrag"
         android:name="com.example.personaltrainer.Fragments.TraineeStartFrag"
         android:label="fragment_trainee_start"
-        tools:layout="@layout/fragment_trainee_start" />
+        tools:layout="@layout/fragment_trainee_start" >
+        <argument android:name="traineeID"
+            app:argType="string" />
+    </fragment>
     <action android:id="@+id/action_global_trainerStartFrag" app:destination="@id/trainerStartFrag" />
     <action android:id="@+id/action_global_traineeStartFrag" app:destination="@id/traineeStartFrag" />
 </navigation>

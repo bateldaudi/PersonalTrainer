@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-auth'
    implementation 'com.squareup.picasso:picasso:2.71828'
+    apply plugin: "androidx.navigation.safeargs"
 }
 
 apply plugin: 'com.android.application'

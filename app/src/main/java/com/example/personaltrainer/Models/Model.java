@@ -55,5 +55,34 @@ public class Model {
         return trainers;
     }
 
+    LiveData<List<User>> clientsOfTrainer;
+    public LiveData<List<User>> getAllClientsOfTrainer(String trainerID) {
+        if(clientsOfTrainer == null)
+        {
+            clientsOfTrainer = sqlModel.getAllClientOfTrainer(trainerID);
+            //clientsOfTrainer.observeForever(data ->{
+                //trainersLoadingState.postValue(Status.loaded);
+            //});
+        }
+
+        return clientsOfTrainer;
+    }
+    User currUser = null;
+
+    public interface UserLoaded
+    {
+        void onCurrentUserLoaded(User user);
+    }
+    public void getCurrentUser(String userID, UserLoaded userFetched) {
+        modelFirebase.getUser(userID, new FireBaseModel.UserFetched() {
+            @Override
+            public void onUserFetch(User user) {
+                userFetched.onCurrentUserLoaded(user);
+                sqlModel.addUser(user);
+            }
+        });
+
+    }
+
 
 }

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class User {
@@ -24,7 +25,13 @@ public class User {
 
     public User() {
     }
-
+    public User(Map<String, Object> user) {
+        this.id = (String) user.get("name");
+        this.type = (int) user.get("type");
+        this.trainerIDOfTrainee = (String) user.get("trainerIDOfTrainee");
+        this.lastUpdated = (long) user.get("lastUpdated");
+        this.imageUrl = (String) user.get("imageUrl");
+    }
     public User(@NonNull String id, String name,int type,String trainerIDOfTrainee) {
         this.id = id;
         this.name = name;
@@ -83,7 +90,7 @@ public class User {
 
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> userMap = new HashMap<>();
-        userMap.put("name", this.id);
+        userMap.put("name", this.name);
         userMap.put("type", this.type);
         userMap.put("trainerIDOfTrainee", this.trainerIDOfTrainee);
         userMap.put("lastUpdated", FieldValue.serverTimestamp());

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.personaltrainer.AuthListeners;
 import com.example.personaltrainer.Models.AuthenticationModel;
+import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.RedirectHelper;
@@ -41,10 +42,17 @@ public class StartFrag extends Fragment {
             // Try to register
             AuthenticationModel.registerUser(userEmail, userPassword, new AuthListeners.RegisterListener() {
                 @Override
-                public void onRegisterUserComplete(String msg) {
+                public void onRegisterUserComplete(String msg, String userID) {
                     if(msg.equals(AuthListeners.REGISTER_SUCCESS))
                     {
-                        RedirectHelper.redirectRegisteredUser(userType,view);
+                        // GET user info from db
+                    Model.instance.getCurrentUser(userID, new Model.UserLoaded() {
+                            @Override
+                            public void onCurrentUserLoaded(User user) {
+                                RedirectHelper.redirectRegisteredUser(user,view);
+                            }
+                        });
+
                     }
                     else
                     {

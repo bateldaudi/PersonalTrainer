@@ -50,7 +50,7 @@ public class SIgnUpFrag extends Fragment implements ShowTrainerListDialogFrag.di
     private CheckBox wantToBeTrainer;
     private TextView checkBoxErrorMsg;
     private ImageView profilePicture;
-    private String trainerIDOfTrainee = null;
+    protected String trainerIDOfTrainee = null;
     private TextView editProfilePicture;
     private TextView trainerName;
     private View layout;
@@ -185,13 +185,14 @@ public class SIgnUpFrag extends Fragment implements ShowTrainerListDialogFrag.di
                                 fullName.getText()
                                         .toString(),
                                 userType,
-                                "trainerIDOfTrainee");
+                               trainerIDOfTrainee == null ? "-1": trainerIDOfTrainee
+                               );
 
                         saveUserInfoToSharedPref(emailValue, passwordValue, userType);
 
                         Model.instance.addUser(user, ((BitmapDrawable)profilePicture.getDrawable()).getBitmap());
 
-                        RedirectHelper.redirectRegisteredUser(userType, layout);
+                        RedirectHelper.redirectRegisteredUser(user, layout);
 
 
                     }
