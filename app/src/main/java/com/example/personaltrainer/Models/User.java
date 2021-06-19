@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
@@ -27,9 +28,10 @@ public class User {
     }
     public User(Map<String, Object> user) {
         this.id = (String) user.get("name");
-        this.type = (int) user.get("type");
+        this.type = ((Long)user.get("type")).intValue();
         this.trainerIDOfTrainee = (String) user.get("trainerIDOfTrainee");
-        this.lastUpdated = (long) user.get("lastUpdated");
+        Timestamp ts = (Timestamp)user.get("lastUpdated");
+        this.lastUpdated = ts.getSeconds();
         this.imageUrl = (String) user.get("imageUrl");
     }
     public User(@NonNull String id, String name,int type,String trainerIDOfTrainee) {
