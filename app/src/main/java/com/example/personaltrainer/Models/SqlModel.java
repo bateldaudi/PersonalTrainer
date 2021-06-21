@@ -26,6 +26,7 @@ public class SqlModel {
         new MyAsyncTask().execute();
 
     }
+
     public LiveData<List<User>> getAllTrainers()
     {
         return AppLocalDb.db.userDao().getAllByType(User.TYPE_TRAINER);

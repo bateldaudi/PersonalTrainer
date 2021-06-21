@@ -9,14 +9,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FireBaseModel {
 
@@ -29,6 +34,9 @@ public class FireBaseModel {
     }
     interface UserFetched {
         public void onUserFetch(User user);
+    }
+    interface IGetAllClients {
+        public void onClientsLoaded(List<User> users);
     }
     public void uploadImage(Bitmap bitmap, String userId, PicUploadListener picUploadListener)
     {
@@ -73,6 +81,29 @@ public class FireBaseModel {
         });
     }
 
+    public static  void getAllTrainers(Long lastUpdated, IGetAllClients iGetAllClients)
+    {
+        FirebaseFirestore.getInstance().collection(USERS_TABLE_NAME)
+
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<User> list = new LinkedList<>();
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot doc: task.getResult()) {
+                     list.add(new User(doc.getData(), doc.getId()));
+                    }
+
+                    iGetAllClients.onClientsLoaded(list);
+                }
+                else
+                {
+
+                }
+            }
+        });
+    }
 
     public void getUser(String userID,UserFetched userFetched )
     {
@@ -93,10 +124,8 @@ public class FireBaseModel {
                     if (document.exists()) {
                         userFetched.onUserFetch(new User(document.getData(), document.getId()));
                     } else {
-int d = 0 ;
                     }
                 } else {
-int a = 0;
                 }
             }
         });

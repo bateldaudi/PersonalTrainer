@@ -1,10 +1,12 @@
 package com.example.personaltrainer.Models;
 
 import android.graphics.Bitmap;
+import android.view.Display;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -41,28 +43,34 @@ public class Model {
     public MutableLiveData<Status> trainersLoadingState =
             new MutableLiveData<>(Status.loading);
 
-    LiveData<List<User>> trainers;
+    LiveData<List<User>> trainers = AppLocalDb.db.userDao().getAllByType(User.TYPE_TRAINER);
 
     public LiveData<List<User>> getAllTrainers() {
-        if(trainers == null)
-        {
-            trainers = sqlModel.getAllTrainers();
-            trainers.observeForever(data ->{
-                trainersLoadingState.postValue(Status.loaded);
-            });
-        }
+       trainersLoadingState.setValue(Status.loading);
+
+        modelFirebase.getAllTrainers(new Timestamp(0).getTime(), new FireBaseModel.IGetAllClients() {
+            @Override
+            public void onClientsLoaded(List<User> users) {
+                for (User trainer:users) {
+                    sqlModel.addUser(trainer);
+                }
+                trainersLoadingState.setValue(Status.loaded);
+            }
+        });
 
         return trainers;
     }
+    public MutableLiveData<Status> trainerClientsLoadingState =
+            new MutableLiveData<>(Status.loading);
 
     LiveData<List<User>> clientsOfTrainer;
     public LiveData<List<User>> getAllClientsOfTrainer(String trainerID) {
         if(clientsOfTrainer == null)
         {
             clientsOfTrainer = sqlModel.getAllClientOfTrainer(trainerID);
-            //clientsOfTrainer.observeForever(data ->{
-                //trainersLoadingState.postValue(Status.loaded);
-            //});
+            clientsOfTrainer.observeForever(data ->{
+                trainerClientsLoadingState.postValue(Status.loaded);
+            });
         }
 
         return clientsOfTrainer;
