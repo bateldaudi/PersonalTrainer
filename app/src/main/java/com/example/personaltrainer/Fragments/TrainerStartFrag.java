@@ -2,6 +2,8 @@ package com.example.personaltrainer.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,10 +24,12 @@ import com.example.personaltrainer.ViewModels.TrainerListViewModel;
 import java.util.List;
 import java.util.Vector;
 
-public class TrainerStartFrag extends Fragment {
+public class TrainerStartFrag extends Fragment  implements UsersLayoutAdapter.OnItemClicked{
     private RecyclerView clientsRV;
-    private ClientsOfTrainerListViewModel clients;
+    private ClientsOfTrainerListViewModel clientsVM;
     private TextView trainerNameTV;
+    private List<User> clients;
+    private  UsersLayoutAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,10 +45,10 @@ public class TrainerStartFrag extends Fragment {
         trainerNameTV.setText("Welcome " +  trainerName + ",");
 
 
-        //String traineeID =TraineeStartFragArgs.fromBundle(getArguments()).getTraineeID();
-        /*
+
         //get trainer id from somewhere
-       clients = new ViewModelProvider(this, new ClientModelFactory("ICS6ypEnFWad4tFDlT0Tmyb751T2" )).get(ClientsOfTrainerListViewModel.class);
+       clientsVM
+               = new ViewModelProvider(this, new ClientModelFactory(trainerID)).get(ClientsOfTrainerListViewModel.class);
 
         clientsRV.setHasFixedSize(true);
 
@@ -54,8 +58,33 @@ public class TrainerStartFrag extends Fragment {
         List<User> sl = new Vector<>();
 
         // specify an adapter
-        UsersLayoutAdapter adapter = new UsersLayoutAdapter(sl);
-        clientsRV.setAdapter(adapter);*/
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        clientsVM.getData().observe(getViewLifecycleOwner(), trainersData ->{
+            if(clients == null) {
+                clients = clientsVM.getData().getValue();
+                adapter = new UsersLayoutAdapter(clients, this );
+                clientsRV.setAdapter(adapter);
+            }
+
+            else {
+                clients.clear();
+                clients.addAll(trainersData) ;
+            }
+
+
+            adapter.notifyDataSetChanged();
+        });
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+
     }
 }

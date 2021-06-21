@@ -40,9 +40,7 @@ public class TraineeStartFrag extends Fragment {
         workouts.setLayoutManager(layoutManager);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("ds","Ds");
-        data.put("ds","Ds");
-        data.put("ds","Ds");
+
 
 
         // todo remove

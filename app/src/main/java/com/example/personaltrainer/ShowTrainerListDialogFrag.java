@@ -63,6 +63,9 @@ public class ShowTrainerListDialogFrag extends DialogFragment implements UsersLa
         userList.setHasFixedSize(true);
 
         GridLayoutManager layoutManager  = new GridLayoutManager(getContext(), 3);
+        layoutManager.offsetChildrenHorizontal(10);
+        layoutManager.offsetChildrenVertical(10);
+
         userList.setLayoutManager(layoutManager);
 
         // specify an adapter

@@ -63,10 +63,26 @@ public class Model {
     public MutableLiveData<Status> trainerClientsLoadingState =
             new MutableLiveData<>(Status.loading);
 
-    LiveData<List<User>> clientsOfTrainer;
+    LiveData<List<User>> clientsOfTrainer  = new MutableLiveData<>();
     public LiveData<List<User>> getAllClientsOfTrainer(String trainerID) {
-        if(clientsOfTrainer == null)
+        trainerClientsLoadingState.setValue(Status.loading);
+        if(clientsOfTrainer.getValue() == null)
         {
+
+            modelFirebase.getAllClientsOfTrainer(trainerID, new Timestamp(0).getTime(), new FireBaseModel.IGetAllClientsOfTrainer() {
+                @Override
+                public void onClientsLoaded(List<User> clients) {
+                    for (User client:clients) {
+                        sqlModel.addUser(client);
+                    }
+                    trainerClientsLoadingState.setValue(Status.loaded);
+                }
+            });
+
+
+
+
+
             clientsOfTrainer = sqlModel.getAllClientOfTrainer(trainerID);
             clientsOfTrainer.observeForever(data ->{
                 trainerClientsLoadingState.postValue(Status.loaded);
@@ -75,6 +91,10 @@ public class Model {
 
         return clientsOfTrainer;
     }
+
+
+
+
     User currUser = null;
 
     public interface UserLoaded

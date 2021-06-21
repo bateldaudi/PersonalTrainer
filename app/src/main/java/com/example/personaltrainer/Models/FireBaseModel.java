@@ -38,6 +38,9 @@ public class FireBaseModel {
     interface IGetAllClients {
         public void onClientsLoaded(List<User> users);
     }
+    interface IGetAllClientsOfTrainer {
+        public void onClientsLoaded(List<User> users);
+    }
     public void uploadImage(Bitmap bitmap, String userId, PicUploadListener picUploadListener)
     {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -93,6 +96,30 @@ public class FireBaseModel {
                 {
                     for (QueryDocumentSnapshot doc: task.getResult()) {
                      list.add(new User(doc.getData(), doc.getId()));
+                    }
+
+                    iGetAllClients.onClientsLoaded(list);
+                }
+                else
+                {
+
+                }
+            }
+        });
+    }
+
+    public static  void getAllClientsOfTrainer(String trainerID,Long lastUpdated, IGetAllClientsOfTrainer iGetAllClients)
+    {
+        FirebaseFirestore.getInstance().collection(USERS_TABLE_NAME)
+                .whereEqualTo("trainerIDOfTrainee", trainerID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<User> list = new LinkedList<>();
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot doc: task.getResult()) {
+                        list.add(new User(doc.getData(), doc.getId()));
                     }
 
                     iGetAllClients.onClientsLoaded(list);
