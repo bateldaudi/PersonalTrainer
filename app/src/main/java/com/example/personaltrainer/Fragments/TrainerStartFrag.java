@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.personaltrainer.Adapters.UsersLayoutAdapter;
 import com.example.personaltrainer.Models.User;
+import com.example.personaltrainer.NavGraphDirections;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.ViewModels.ClientModelFactory;
 import com.example.personaltrainer.ViewModels.ClientsOfTrainerListViewModel;
@@ -85,6 +88,9 @@ public class TrainerStartFrag extends Fragment  implements UsersLayoutAdapter.On
 
     @Override
     public void onItemClicked(int position) {
-
+        // open client for edit
+        User client = clients.get(position);
+        NavDirections action  = NavGraphDirections.actionGlobalEditTrainerWorkOuts(client.getId(), client.getName());
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

@@ -41,6 +41,9 @@ android:id="@+id/nav_graph">
         <argument
             android:name="trainerName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_trainerStartFrag_to_editTrainerWorkOuts"
+            app:destination="@id/editTrainerWorkOuts" />
     </fragment>
     <fragment
         android:id="@+id/traineeStartFrag"
@@ -52,4 +55,16 @@ android:id="@+id/nav_graph">
     </fragment>
     <action android:id="@+id/action_global_trainerStartFrag" app:destination="@id/trainerStartFrag" />
     <action android:id="@+id/action_global_traineeStartFrag" app:destination="@id/traineeStartFrag" />
+    <fragment
+        android:id="@+id/editTrainerWorkOuts"
+        android:name="com.example.personaltrainer.Fragments.editTrainerWorkOuts"
+        android:label="fragment_edit_trainer_work_outs"
+        tools:layout="@layout/fragment_edit_trainer_work_outs" >
+        <argument
+            android:name="traineeID"
+            app:argType="string" />
+        <argument android:name="traineeName"
+            app:argType="string" />
+    </fragment>
+    <action android:id="@+id/action_global_editTrainerWorkOuts" app:destination="@id/editTrainerWorkOuts" />
 </navigation>
