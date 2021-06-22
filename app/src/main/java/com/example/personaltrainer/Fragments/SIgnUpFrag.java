@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
@@ -34,7 +33,7 @@ import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.User;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.RedirectHelper;
-import com.example.personaltrainer.ShowTrainerListDialogFrag;
+import com.example.personaltrainer.Dialogs.ShowTrainerListDialogFrag;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;

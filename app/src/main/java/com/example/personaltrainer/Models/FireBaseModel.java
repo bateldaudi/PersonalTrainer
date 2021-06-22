@@ -72,6 +72,7 @@ public class FireBaseModel {
     }
 
     public static final String USERS_TABLE_NAME = "users";
+    public static final String WORKOUTS_TABLE_NAME = "workouts";
 
     public  void  addUser(User user)
     {
@@ -154,6 +155,18 @@ public class FireBaseModel {
                     }
                 } else {
                 }
+            }
+        });
+    }
+
+    // workouts
+    public  void  addWorkout(Workout workout)
+    {
+        FirebaseFirestore.getInstance().collection(WORKOUTS_TABLE_NAME).document(workout.getId())
+                .set(workout.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
             }
         });
     }

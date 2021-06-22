@@ -1,13 +1,10 @@
-package com.example.personaltrainer;
+package com.example.personaltrainer.Dialogs;
 
-import android.graphics.ColorSpace;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +17,10 @@ import android.widget.ProgressBar;
 import com.example.personaltrainer.Adapters.UsersLayoutAdapter;
 import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.User;
+import com.example.personaltrainer.R;
 import com.example.personaltrainer.ViewModels.TrainerListViewModel;
 
 import java.util.List;
-import java.util.Vector;
 
 
 public class ShowTrainerListDialogFrag extends DialogFragment implements UsersLayoutAdapter.OnItemClicked {

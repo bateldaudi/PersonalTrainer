@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-public class User {
+public class User{
     @PrimaryKey
     @NonNull
     private String id;

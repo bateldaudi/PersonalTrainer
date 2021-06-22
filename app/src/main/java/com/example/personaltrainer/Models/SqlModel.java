@@ -37,5 +37,32 @@ public class SqlModel {
         return AppLocalDb.db.userDao().getAllClientsOfTrainer(trainerID);
     }
 
+    // workouts
+    public void addWorkout(Workout workout)
+    {
+        class MyAsyncTask extends AsyncTask
+        {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AppLocalDb.db.workoutDao().insertAll(workout);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+            }
+        }
+
+        new MyAsyncTask().execute();
+
+    }
+
+    public LiveData<List<Workout>> getAllWorkoutsOfTrainee(String traineeID)
+    {
+        return AppLocalDb.db.workoutDao().getAllWorkoutsByTranieeID(traineeID);
+    }
+
+
 
 }

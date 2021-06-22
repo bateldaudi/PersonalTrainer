@@ -112,5 +112,11 @@ public class Model {
 
     }
 
+    // workouts
+    public void addWorkout(Workout workout) {
+        modelFirebase.addWorkout(workout);
+        sqlModel.addWorkout(workout);
+
+    }
 
 }

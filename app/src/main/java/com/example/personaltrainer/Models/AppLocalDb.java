@@ -6,9 +6,10 @@ import androidx.room.RoomDatabase;
 
 import com.example.personaltrainer.MyApplication;
 
-@Database(entities = {User.class}, version = 2)
+@Database(entities = {User.class, Workout.class}, version = 4)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
+    public abstract WorkoutDao workoutDao();
 }
 public class AppLocalDb{
     static public AppLocalDbRepository db =
