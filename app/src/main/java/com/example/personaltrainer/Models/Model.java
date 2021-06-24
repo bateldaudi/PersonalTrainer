@@ -79,10 +79,6 @@ public class Model {
                 }
             });
 
-
-
-
-
             clientsOfTrainer = sqlModel.getAllClientOfTrainer(trainerID);
             clientsOfTrainer.observeForever(data ->{
                 trainerClientsLoadingState.postValue(Status.loaded);
@@ -114,9 +110,43 @@ public class Model {
 
     // workouts
     public void addWorkout(Workout workout) {
-        modelFirebase.addWorkout(workout);
-        sqlModel.addWorkout(workout);
+        modelFirebase.addWorkout(workout, new FireBaseModel.WorkoutAdded() {
+            @Override
+            public void onWorkoutAdded(String workoutID) {
+                workout.setId(workoutID);
+                sqlModel.addWorkout(workout);
+            }
+        });
 
+
+    }
+
+    public MutableLiveData<Status> traineeWorkoutsLoadingState =
+            new MutableLiveData<>(Status.loading);
+
+    LiveData<List<Workout>> traineeWorkouts  = new MutableLiveData<>();
+
+    public LiveData<List<Workout>> getAllWorkoutsOfTrainee(String traineeID) {
+        traineeWorkoutsLoadingState.setValue(Status.loading);
+
+            modelFirebase.getAllWorkoutsOfTrainee(traineeID, new Timestamp(0).getTime(), new FireBaseModel.IGetAllWorkouts() {
+                @Override
+                public void onWorkoutsLoaded(List<Workout> workouts) {
+                    for (Workout workout:workouts) {
+                        sqlModel.addWorkout(workout);
+                    }
+
+                    traineeWorkoutsLoadingState.setValue(Status.loaded);
+
+                }
+            });
+
+            traineeWorkouts = sqlModel.getAllWorkoutsOfTrainee(traineeID);
+            traineeWorkouts.observeForever(data ->{
+                traineeWorkoutsLoadingState.postValue(Status.loaded);
+            });
+
+        return traineeWorkouts;
     }
 
 }

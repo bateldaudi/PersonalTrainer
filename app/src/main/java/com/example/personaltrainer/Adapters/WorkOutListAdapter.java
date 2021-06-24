@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.personaltrainer.Models.Workout;
 import com.example.personaltrainer.MyApplication;
 import com.example.personaltrainer.R;
 
+import java.util.List;
 import java.util.Vector;
 
 public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.WorkOutItemViewHolder> {
@@ -33,9 +35,9 @@ public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.
 
     }
 
-    Vector<String> mData;
+    List<Workout> mData;
 
-    public WorkOutListAdapter(Vector<String> data, boolean isEditable) {
+    public WorkOutListAdapter(List<Workout> data, boolean isEditable) {
         mData = data;
     }
 
@@ -52,8 +54,8 @@ public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull WorkOutItemViewHolder holder, int position) {
-        String str = mData.elementAt(position);
-        holder.workOutName.setText("bate;" + str);
+        Workout workout = mData.get(position);
+        holder.workOutName.setText(workout.getDescription());
         holder.workOutImage.setImageResource(R.drawable.ic_launcher_foreground);
     }
 

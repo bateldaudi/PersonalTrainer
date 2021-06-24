@@ -35,11 +35,17 @@ public class FireBaseModel {
     interface UserFetched {
         public void onUserFetch(User user);
     }
+    interface WorkoutAdded {
+        public void onWorkoutAdded(String workoutID);
+    }
     interface IGetAllClients {
         public void onClientsLoaded(List<User> users);
     }
     interface IGetAllClientsOfTrainer {
         public void onClientsLoaded(List<User> users);
+    }
+    interface IGetAllWorkouts {
+        public void onWorkoutsLoaded(List<Workout> workouts);
     }
     public void uploadImage(Bitmap bitmap, String userId, PicUploadListener picUploadListener)
     {
@@ -160,13 +166,39 @@ public class FireBaseModel {
     }
 
     // workouts
-    public  void  addWorkout(Workout workout)
+    public  void addWorkout(Workout workout, WorkoutAdded workoutAdded )
     {
-        FirebaseFirestore.getInstance().collection(WORKOUTS_TABLE_NAME).document(workout.getId())
-                .set(workout.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        FirebaseFirestore.getInstance().collection(WORKOUTS_TABLE_NAME)
+                .add(workout.toMap()).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onSuccess(Void aVoid) {
+            public void onSuccess(DocumentReference documentReference) {
+                workoutAdded.onWorkoutAdded(documentReference.getId());
+            }
+        });
+    }
 
+    public static  void getAllWorkoutsOfTrainee(String traineeID,
+                                                Long lastUpdated,
+                                                IGetAllWorkouts iGetAllWorkouts)
+    {
+        FirebaseFirestore.getInstance().collection(WORKOUTS_TABLE_NAME)
+                .whereEqualTo("traineeID", traineeID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Workout> list = new LinkedList<>();
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot doc: task.getResult()) {
+                        list.add(new Workout(doc.getData(), doc.getId()));
+                    }
+
+                    iGetAllWorkouts.onWorkoutsLoaded(list);
+                }
+                else
+                {
+
+                }
             }
         });
     }

@@ -21,7 +21,7 @@ public class RedirectHelper {
         }
         else {
             // Start trainee view
-            NavDirections action  = NavGraphDirections.actionGlobalTraineeStartFrag(user.getId());
+            NavDirections action  = NavGraphDirections.actionGlobalTraineeStartFrag(user.getId(),  user.getName());
             // Start trainer view
             Navigation.findNavController(view).navigate(action);
         }
