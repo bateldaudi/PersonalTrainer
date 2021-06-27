@@ -70,4 +70,13 @@ android:id="@+id/nav_graph">
             app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_editTrainerWorkOuts" app:destination="@id/editTrainerWorkOuts" />
+    <fragment
+        android:id="@+id/workoutItemsList"
+        android:name="com.example.personaltrainer.Fragments.WorkoutItemsList"
+        android:label="fragment_workout_items_list"
+        tools:layout="@layout/fragment_workout_items_list" >
+        <argument
+            android:name="workoutID"
+            app:argType="string" />
+    </fragment><action android:id="@+id/action_global_workoutItemsList" app:destination="@id/workoutItemsList"/>
 </navigation>

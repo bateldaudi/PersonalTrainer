@@ -38,6 +38,9 @@ public class FireBaseModel {
     interface WorkoutAdded {
         public void onWorkoutAdded(String workoutID);
     }
+    interface IWorkoutItemAdded {
+        public void onWorkoutItemAdded(String workoutID);
+    }
     interface IGetAllClients {
         public void onClientsLoaded(List<User> users);
     }
@@ -46,6 +49,9 @@ public class FireBaseModel {
     }
     interface IGetAllWorkouts {
         public void onWorkoutsLoaded(List<Workout> workouts);
+    }
+    interface IWorkoutItemLoaded {
+        public void onItemsLoaded(List<WorkoutItem> workoutsItems);
     }
     public void uploadImage(Bitmap bitmap, String userId, PicUploadListener picUploadListener)
     {
@@ -79,6 +85,7 @@ public class FireBaseModel {
 
     public static final String USERS_TABLE_NAME = "users";
     public static final String WORKOUTS_TABLE_NAME = "workouts";
+    public static final String WORKOUTS_ITEMS_TABLE_NAME = "workout_item";
 
     public  void  addUser(User user)
     {
@@ -194,6 +201,44 @@ public class FireBaseModel {
                     }
 
                     iGetAllWorkouts.onWorkoutsLoaded(list);
+                }
+                else
+                {
+
+                }
+            }
+        });
+    }
+
+    // workouts items
+    public  void addWorkoutItem(WorkoutItem workoutItem, IWorkoutItemAdded iWorkoutItemAdded )
+    {
+        FirebaseFirestore.getInstance().collection(WORKOUTS_ITEMS_TABLE_NAME)
+                .add(workoutItem.toMap()).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                iWorkoutItemAdded.onWorkoutItemAdded(documentReference.getId());
+            }
+        });
+    }
+
+    public static  void getAllWorkoutItems(String workoutID,
+                                                Long lastUpdated,
+                                                IWorkoutItemLoaded iWorkoutItemLoaded)
+    {
+        FirebaseFirestore.getInstance().collection(WORKOUTS_ITEMS_TABLE_NAME)
+                .whereEqualTo("workoutID", workoutID)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<WorkoutItem> list = new LinkedList<>();
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot doc: task.getResult()) {
+                        list.add(new WorkoutItem(doc.getData(), doc.getId()));
+                    }
+
+                    iWorkoutItemLoaded.onItemsLoaded(list);
                 }
                 else
                 {

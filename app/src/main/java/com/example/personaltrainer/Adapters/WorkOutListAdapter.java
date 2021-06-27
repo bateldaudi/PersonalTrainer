@@ -19,14 +19,26 @@ import java.util.Vector;
 
 public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.WorkOutItemViewHolder> {
 
+    public interface ItemClickedListener
+    {
+        public void onItemClicked(int position);
+    }
+    private ItemClickedListener itemClickedListener;
     static class WorkOutItemViewHolder extends RecyclerView.ViewHolder{
         TextView workOutName;
         ImageView workOutImage;
         ImageView actionBtn;
 
 
-        public WorkOutItemViewHolder(@NonNull View itemView) {
+        public WorkOutItemViewHolder(@NonNull View itemView, ItemClickedListener itemClickedListener) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickedListener.onItemClicked(getAdapterPosition());
+                }
+            });
+
             workOutName = itemView.findViewById(R.id.workout_info_name);
             workOutImage = itemView.findViewById(R.id.workout_info_image);
             actionBtn =  itemView.findViewById(R.id.workout_info_action);
@@ -37,8 +49,9 @@ public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.
 
     List<Workout> mData;
 
-    public WorkOutListAdapter(List<Workout> data, boolean isEditable) {
+    public WorkOutListAdapter(List<Workout> data, ItemClickedListener itemClickedListener) {
         mData = data;
+        this.itemClickedListener = itemClickedListener;
     }
 
     @NonNull
@@ -48,7 +61,7 @@ public class WorkOutListAdapter extends RecyclerView.Adapter<WorkOutListAdapter.
               ((LayoutInflater) MyApplication.getAppContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                       .inflate(R.layout.work_out_info_item,parent,false);
 
-      WorkOutItemViewHolder myViewHolder = new WorkOutItemViewHolder(view);
+      WorkOutItemViewHolder myViewHolder = new WorkOutItemViewHolder(view, this.itemClickedListener);
       return myViewHolder;
     }
 

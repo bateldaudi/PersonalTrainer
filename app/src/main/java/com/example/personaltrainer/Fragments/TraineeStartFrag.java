@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import com.example.personaltrainer.Adapters.WorkOutListAdapter;
 import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.Workout;
+import com.example.personaltrainer.NavGraphDirections;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.ViewModels.TraineeWorkoutFactory;
 import com.example.personaltrainer.ViewModels.TraineeWorkoutsViewModel;
@@ -32,14 +35,14 @@ import java.util.Map;
 import java.util.Vector;
 
 
-public class TraineeStartFrag extends Fragment {
+public class TraineeStartFrag extends Fragment implements WorkOutListAdapter.ItemClickedListener {
 
     private RecyclerView workouts;
     private List<Workout> workoutsList;
     private TraineeWorkoutsViewModel traineeWorkoutsViewModel;
     private WorkOutListAdapter adapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private String traineeID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +52,7 @@ public class TraineeStartFrag extends Fragment {
 
         mSwipeRefreshLayout = view.findViewById(R.id.trainee_start_pull_refresh);
 
-        String traineeID =TraineeStartFragArgs.fromBundle(getArguments()).getTraineeID();
+        traineeID =TraineeStartFragArgs.fromBundle(getArguments()).getTraineeID();
         String traineeName =TraineeStartFragArgs.fromBundle(getArguments()).getTraineeName();
 
         // on refresh get all workouts
@@ -73,7 +76,7 @@ public class TraineeStartFrag extends Fragment {
         traineeWorkoutsViewModel.getData().observe(getViewLifecycleOwner(), workoutsData ->{
             if(workoutsList == null) {
                 workoutsList = traineeWorkoutsViewModel.getData().getValue();
-                adapter = new WorkOutListAdapter(workoutsList, false );
+                adapter = new WorkOutListAdapter(workoutsList, this );
                 workouts.setAdapter(adapter);
             }
 
@@ -101,5 +104,14 @@ public class TraineeStartFrag extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        // open workout
+        // open workout items view
+        NavDirections action  = NavGraphDirections.actionGlobalWorkoutItemsList(traineeID);
+        // Start trainer view
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

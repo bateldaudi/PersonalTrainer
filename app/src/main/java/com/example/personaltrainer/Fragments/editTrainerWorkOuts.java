@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import com.example.personaltrainer.Adapters.WorkOutListAdapter;
 import com.example.personaltrainer.Dialogs.AddWorkoutDialog;
 import com.example.personaltrainer.Models.Model;
 import com.example.personaltrainer.Models.Workout;
+import com.example.personaltrainer.NavGraphDirections;
 import com.example.personaltrainer.R;
 import com.example.personaltrainer.Dialogs.ShowTrainerListDialogFrag;
 import com.example.personaltrainer.ViewModels.ClientModelFactory;
@@ -28,7 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class editTrainerWorkOuts extends Fragment implements AddWorkoutDialog.IonAddedWorkout, View.OnClickListener {
+public class editTrainerWorkOuts extends Fragment implements AddWorkoutDialog.IonAddedWorkout, View.OnClickListener, WorkOutListAdapter.ItemClickedListener {
     private TextView traineeNameTV;
     private FloatingActionButton addBtn;
     private String traineeID;
@@ -61,7 +64,7 @@ public class editTrainerWorkOuts extends Fragment implements AddWorkoutDialog.Io
         traineeWorkoutsViewModel.getData().observe(getViewLifecycleOwner(), workoutsData ->{
             if(workouts == null) {
                 workouts = traineeWorkoutsViewModel.getData().getValue();
-                adapter = new WorkOutListAdapter(workouts, false );
+                adapter = new WorkOutListAdapter(workouts, this );
                 workoutList.setAdapter(adapter);
             }
 
@@ -102,5 +105,13 @@ public class editTrainerWorkOuts extends Fragment implements AddWorkoutDialog.Io
             addWorkoutDialog.setTargetFragment(this, 0);
             addWorkoutDialog.show(fm, "fragment_add_workout");
         }
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        // open workout items view
+        NavDirections action  = NavGraphDirections.actionGlobalWorkoutItemsList(traineeID);
+        // Start trainer view
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

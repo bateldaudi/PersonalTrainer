@@ -117,8 +117,6 @@ public class Model {
                 sqlModel.addWorkout(workout);
             }
         });
-
-
     }
 
     public MutableLiveData<Status> traineeWorkoutsLoadingState =
@@ -149,4 +147,41 @@ public class Model {
         return traineeWorkouts;
     }
 
+    // workout items
+
+    public void addWorkoutItem(WorkoutItem workoutItem) {
+        modelFirebase.addWorkoutItem(workoutItem, new FireBaseModel.IWorkoutItemAdded() {
+            @Override
+            public void onWorkoutItemAdded(String workoutID) {
+                workoutItem.setId(workoutID);
+                sqlModel.addWorkoutItem(workoutItem);
+            }
+        });
+    }
+    public MutableLiveData<Status> workoutItemsLoadingState =
+            new MutableLiveData<>(Status.loading);
+    LiveData<List<WorkoutItem>> workoutItems  = new MutableLiveData<>();
+
+    public LiveData<List<WorkoutItem>> getAllWorkoutItems(String workoutID) {
+        workoutItemsLoadingState.setValue(Status.loading);
+
+        modelFirebase.getAllWorkoutItems(workoutID, new Timestamp(0).getTime(), new FireBaseModel.IWorkoutItemLoaded() {
+                    @Override
+                    public void onItemsLoaded(List<WorkoutItem> workoutsItems) {
+                        for (WorkoutItem workoutItem:workoutsItems) {
+                            sqlModel.addWorkoutItem(workoutItem);
+                        }
+
+                        workoutItemsLoadingState.setValue(Status.loaded);
+                    }
+                }
+        );
+
+        workoutItems = sqlModel.getAllWorkoutItems(workoutID);
+        workoutItems.observeForever(data ->{
+            workoutItemsLoadingState.postValue(Status.loaded);
+        });
+
+        return workoutItems;
+    }
 }
